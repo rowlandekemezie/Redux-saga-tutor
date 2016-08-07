@@ -1,13 +1,12 @@
-// Reducer
-const defaultState = {
-  user: []
-};
+import { combineReducers } from 'redux';
 
-export default function userReducer(state = defaultState.user, action) {
+const userReducer = (state = [], action) => {
   switch (action.type) {
     case 'LOAD_USER_SUCCESS':
-      return [...state, action.user];
+      return {...state,  user:action.user};
     default:
       return state;
   }
-}
+};
+
+export default combineReducers({user: userReducer});

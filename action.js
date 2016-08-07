@@ -1,6 +1,7 @@
 // Action
-export function getUserDetails() {
+export function getUserDetails(payload) {
   return {
-    type: 'LOAD_USER_REQUEST'
+    type: 'LOAD_USER_REQUEST',
+    payload
   }
 }

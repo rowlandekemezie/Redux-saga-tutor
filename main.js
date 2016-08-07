@@ -1,57 +1,62 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { connect, Provider } from 'react-redux';
-import { store } from './store';
-import { bindActionCreators } from 'redux'; // Wraps action creator to the store dispatch function
-import {getUserDetails} from './action';
+import {connect, Provider} from 'react-redux'; // Provider makes the state of available to the components, and connect binds your react component to your redux store
+import {store} from './store';
+import {bindActionCreators} from 'redux'; // Wraps action creator to the store dispatch function
+import * as action from './action';
 
 
-class UserProfile extends Component {
-  constructor() {
-    super();
-    this.handleUserDetail = this.handleUserDetail.bind(this);
-  }
-
-  handleUserDetail(event){
-    event.preventDefault();
-    if(this.username !== null){
-      this.props.getUserDetails(this.username);
+class UserProfile  extends Component {
+    constructor(props) {
+      super(props);
+      this.handleUserDetail = this.handleUserDetail.bind(this);
     }
-  }
 
-  render() {
-    console.log('This is great tutorial')
-    console.log(this.props, 'porpsl');
-    const {username, avatar, profile} = this.props;
-    return (
-      <div>
-      <input
-        type="text"
-        ref={(ref) => this.username = ref}
-      />
-        <button onClick={this.handleUserDetail}>Search</button>
+    componentDidMount() {
+      this.props.getUserDetails('row123');
+      console.log(this.props, 'great')
+    }
+
+    handleUserDetail(event) {
+      event.preventDefault();
+      if (this.username !== null) {
+        this.props.getUserDetails(this.username.value);
+        this.username.value = '';
+      }
+    }
+
+    render() {
+      const {user} = this.props;
+      return (
         <div>
-          <img src={avatar}/>
-          <a href={profile}>{username}</a>
-        </div>
-    </div>
-    )
-  }
-}
+          <input
+            type="text"
+            ref={(ref) => this.username = ref}
+          />
+          <button onClick={this.handleUserDetail}>Search</button>
+          <div>
+            <p>Great are you Lord</p>
 
-const mapStateToProps = (state) => {
-  console.log(state.user, 'user profile')
+          </div>
+        </div>
+      )}
+
+  }
+
+const mapStateToProps = ({user}) => {
+  console.log(user.user, 'mstp')
   return {
-    user:state.user
+    user: user.user
   }
 };
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(action, dispatch);
+};
 
-// const mapDispatchToProps = (dispatch) => {
-//   return bindActionCreators(getUserDetails, dispatch);
-// };
+const UserProfilePage = connect(mapStateToProps, mapDispatchToProps)(UserProfile);
 
-connect(mapStateToProps)(UserProfile);
 
 ReactDOM.render(<Provider store={store}>
-  <UserProfile />
+  <UserProfilePage />
 </Provider>, document.getElementById('root'));
+
