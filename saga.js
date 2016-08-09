@@ -13,13 +13,7 @@ export function* loadUserDetails({payload}) {
 }
 
 // Watches for LOAD_USER_REQUEST action and call loadUserDetails with supplied arguments
-export function* WatchUserRequest() {
-  while (true) {
+export default function* WatchUserRequest() {
     yield* takeLatest('LOAD_USER_REQUEST', loadUserDetails);
-  }
-}
-
-export default function* startForman() {
-  yield fork(WatchUserRequest);
 }
 

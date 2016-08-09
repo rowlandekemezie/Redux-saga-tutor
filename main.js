@@ -3,18 +3,17 @@ import ReactDOM from 'react-dom';
 import { connect, Provider } from 'react-redux'; // Provider makes the state of available to the components, and connect binds your react component to your redux store
 import { store } from './store';
 import { bindActionCreators } from 'redux'; // Wraps action creator to the store dispatch function
-import * as action from './action';
+import { getUserDetails } from './action';
 
 
 class UserProfile extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.handleUserDetail = this.handleUserDetail.bind(this);
   }
 
   componentDidMount() {
     this.props.getUserDetails('row123');
-    console.log(this.props, 'great')
   }
 
   handleUserDetail(event) {
@@ -27,24 +26,28 @@ class UserProfile extends Component {
 
   render() {
     const { user } = this.props;
+    console.log(user, 'user object');
     return (
       <div>
-        <input
-          type="text"
-          ref={(ref) => this.username = ref}
-        />
-        <button onClick={this.handleUserDetail}>Search</button>
-        <div>
-          <p>Great are you Lord</p>
-
-        </div>
+        {user ? <div>
+          <input
+            type="text"
+            ref={(ref) => this.username = ref}
+          />
+          <button onClick={this.handleUserDetail}>Search</button>
+          <div>
+            <h1> User Profile </h1>
+            <img src={user.avatar_url}/>
+            <p><a href={user.html_url} target="_blank">{user.login}</a></p>
+          </div>
+        </div> : '...loading'}
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ user }) =>  ({ user: user.user });
-const mapDispatchToProps = (dispatch) => ({ action: bindActionCreators(action, dispatch) });
+const mapStateToProps = (state) => ({ user: state.user[0] });
+const mapDispatchToProps = (dispatch) =>  bindActionCreators({ getUserDetails }, dispatch);
 
 const UserProfilePage = connect(mapStateToProps, mapDispatchToProps)(UserProfile);
 
