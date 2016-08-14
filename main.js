@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { connect, Provider } from 'react-redux'; // Provider makes the state of available to the components, and connect binds your react component to your redux store
+import { connect, Provider } from 'react-redux';
 import { store } from './store';
-import { bindActionCreators } from 'redux'; // Wraps action creator to the store dispatch function
 import { getUserDetails } from './action';
 
 
@@ -26,7 +25,6 @@ class UserProfile extends Component {
 
   render() {
     const { user } = this.props;
-    console.log(user, 'user object');
     return (
       <div>
         {user ? <div>
@@ -46,13 +44,24 @@ class UserProfile extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ user: state.user[0] });
-const mapDispatchToProps = (dispatch) =>  bindActionCreators({ getUserDetails }, dispatch);
+UserProfile.propTypes = {
+  user: PropTypes.object.isRequired
+};
 
+// Map the store's state to component's props.
+const mapStateToProps = (state) => ({ user: state });
+
+// Wrap action creator with dispatch method. This way getUserDetails is passed in as props.
+const mapDispatchToProps = (dispatch) => ({ getUserDetails: (username) => dispatch(getUserDetails(username)) });
+
+// React-redux connect function connects our React component to redux store
 const UserProfilePage = connect(mapStateToProps, mapDispatchToProps)(UserProfile);
 
-
-ReactDOM.render(<Provider store={store}>
-  <UserProfilePage />
-</Provider>, document.getElementById('root'));
-
+// Mount our component to the DOM
+const element = document.getElementById('root');
+ReactDOM.render(
+  <Provider store={store}>
+    <UserProfilePage />
+  </Provider>,
+  element, 0
+);
