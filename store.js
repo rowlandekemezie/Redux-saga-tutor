@@ -10,7 +10,7 @@ const sagaMiddleaware = createSagaMiddleware();
 // Mount the middleware and reducer to the store
 export const store = createStore(user, compose(
   applyMiddleware(sagaMiddleaware),
- window.devToolsExtension ? window.devToolsExtension() : f => f));
+  window.devToolsExtension ? window.devToolsExtension() : f => f));
 
 // Now run the saga
 sagaMiddleaware.run(userSaga);

@@ -8,4 +8,3 @@ export const gitHubApi = (username) => {
       throw error;
     })
 };
-
