@@ -2,7 +2,7 @@
   "name": "rowland-rekemezie",
   "version": "1.0.0",
   "description": "This is a walkthrough for creating React/Redux application with Agility",
-  "main": "componentwillmount.js",
+  "main": "main.js",
   "scripts": {
     "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
